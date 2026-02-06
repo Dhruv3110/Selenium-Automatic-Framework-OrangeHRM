@@ -1,0 +1,11 @@
+<suite name="TestSuite" parallel="methods" thread-count="3">
+	<test name="LoginTests">
+		<parameter name="username" value="Admin" />
+		<parameter name="password" value="admin123" />
+		<classes>
+			<class name="test.LoginTest"/>
+			<class name="test.ResetPasswordTest"/>
+			<class name="test.DashboardTest"/>
+		</classes>
+	</test>
+</suite>
