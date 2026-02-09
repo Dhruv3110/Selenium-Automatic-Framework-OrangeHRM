@@ -15,6 +15,7 @@ import com.aventstack.extentreports.MediaEntityBuilder;
 
 import utils.ExtentReportManager;
 import utils.Log;
+import utils.WaitManager;
 
 public abstract class BaseTest {
 	private static ThreadLocal<WebDriver> driver = new ThreadLocal<>();
@@ -30,15 +31,15 @@ public abstract class BaseTest {
 		Log.info("Starting WebDriver...");
 		ChromeOptions options = new ChromeOptions();
 		options.addArguments("--headless");
-//		options.addArguments("--window-size=1920,1080");
-//		options.addArguments("--disable-gpu");
+		options.addArguments("--window-size=1920,1080");
+		options.addArguments("--disable-gpu");
 //		options.addArguments("--no-sandbox");
 //		options.addArguments("--disable-dev-shm-usage");
-//		options.addArguments("--disable-notifications");
+		options.addArguments("--disable-notifications");
 //		options.addArguments("--disable-infobars");
 //		options.addArguments("--disable-extensions");
 
-		WebDriver webDriver = new ChromeDriver();
+		WebDriver webDriver = new ChromeDriver(options);
 		webDriver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
 		webDriver.manage().window().maximize();
 
@@ -68,6 +69,7 @@ public abstract class BaseTest {
 			getDriver().quit();
 			driver.remove();
 		}
+		WaitManager.removeWait();
 		ExtentReportManager.unload();
 	}
 

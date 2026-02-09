@@ -1,130 +1,129 @@
 package pages;
 
-import java.time.Duration;
 import java.util.List;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
+
+import utils.WaitUtils;
 
 public class LoginPage {
 
-	private WebDriver driver;
+    private WebDriver driver;
 
-	// Page Factory Elements
-	@FindBy(xpath = "//input[@name='username']")
-	WebElement usernameTextBox;
+    // =================== LOCATORS ===================
 
-	@FindBy(xpath = "//input[@type='password']")
-	WebElement passwordTextBox;
+    private By usernameTextBox = By.xpath("//input[@name='username']");
+    private By passwordTextBox = By.xpath("//input[@type='password']");
+    private By loginButton = By.xpath("//button[@type='submit']");
 
-	@FindBy(xpath = "//button[@type='submit']")
-	WebElement loginButton;
+    private By usernameRequiredMessage = By.xpath(
+            "//input[@name='username']/ancestor::div[contains(@class,'oxd-input-group')]//span[text()='Required']");
 
-	@FindBy(xpath = "//input[@name = 'username']/ancestor::div[contains(@class,'oxd-input-group')]//span[text() = 'Required']")
-	WebElement usernameRequiredMessage;
+    private By passwordRequiredMessage = By.xpath(
+            "//input[@name='password']/ancestor::div[contains(@class,'oxd-input-group')]//span[text()='Required']");
 
-	@FindBy(xpath = "//input[@name = 'password']/ancestor::div[contains(@class,'oxd-input-group')]//span[text() = 'Required']")
-	WebElement passwordRequiredMessage;
+    private By forgotPasswordLink = By.xpath("//div[contains(@class,'orangehrm-login-forgot')]");
 
-	@FindBy(xpath = "//div[contains(@class,'orangehrm-login-forgot')]")
-	WebElement forgotPasswordLink;
+    private By linkedinIcon = By.xpath("//a[contains(@href,'linkedin')]");
+    private By facebookIcon = By.xpath("//a[contains(@href,'facebook')]");
+    private By twitterIcon = By.xpath("//a[contains(@href,'twitter')]");
+    private By youtubeIcon = By.xpath("//a[contains(@href,'youtube')]");
 
-	@FindBy(xpath = "//a[contains(@href,'linkedin')]")
-	WebElement linkedinIcon;
-	@FindBy(xpath = "//a[contains(@href,'facebook')]")
-	WebElement facebookIcon;
-	@FindBy(xpath = "//a[contains(@href,'twitter')]")
-	WebElement twitterIcon;
-	@FindBy(xpath = "//a[contains(@href,'youtube')]")
-	WebElement youtubeIcon;
+    private By loginErrorMsg = By.xpath("//p[contains(@class,'oxd-alert-content-text')]");
 
-	@FindBy(xpath = "//p[contains(@class,'oxd-alert-content-text')]")
-	List<WebElement> loginErrorMsg;
+    // =================== CONSTRUCTOR ===================
 
-	// Constructor
-	public LoginPage(WebDriver driver) {
-		this.driver = driver;
-		PageFactory.initElements(driver, this);
-	}
+    public LoginPage(WebDriver driver) {
+        this.driver = driver;
+    }
 
-	// Actions
+    // =================== ACTIONS ===================
+    
+    public boolean isLoginPageDisplayed() {
+        return WaitUtils.waitForVisible(driver,
+            By.name("username")
+        ).isDisplayed();
+    }
 
-	public void enterUsername(String username) {
-		new WebDriverWait(driver, Duration.ofSeconds(10)).until(ExpectedConditions.visibilityOf(usernameTextBox));
 
-		usernameTextBox.sendKeys(username);
-	}
+    public void enterUsername(String username) {
+        WebElement user = WaitUtils.waitForVisible(driver, usernameTextBox);
+        user.clear();
+        user.sendKeys(username);
+    }
 
-	public void enterPassword(String password) {
-		new WebDriverWait(driver, Duration.ofSeconds(10)).until(ExpectedConditions.visibilityOf(passwordTextBox));
+    public void enterPassword(String password) {
+        WebElement pass = WaitUtils.waitForVisible(driver, passwordTextBox);
+        pass.clear();
+        pass.sendKeys(password);
+    }
 
-		passwordTextBox.sendKeys(password);
-	}
+    public void clickLogin() {
+        WaitUtils.waitForClickable(driver, loginButton).click();
+    }
 
-	public void clickLogin() {
-		new WebDriverWait(driver, Duration.ofSeconds(10)).until(ExpectedConditions.elementToBeClickable(loginButton));
+    public void pressEnterToLogin() {
+        WaitUtils.waitForVisible(driver, passwordTextBox)
+                .sendKeys(Keys.ENTER);
+    }
 
-		loginButton.click();
-	}
+    public void clickForgotPasswordLink() {
+        WaitUtils.waitForClickable(driver, forgotPasswordLink).click();
+    }
 
-	public void clickForgotPasswordLink() {
-		new WebDriverWait(driver, Duration.ofSeconds(10))
-				.until(ExpectedConditions.elementToBeClickable(forgotPasswordLink));
+    // =================== VALIDATIONS ===================
 
-		forgotPasswordLink.click();
-	}
+    public boolean isUsernameRequiredMessageDisplayed() {
+        return !driver.findElements(usernameRequiredMessage).isEmpty()
+                && driver.findElement(usernameRequiredMessage).isDisplayed();
+    }
 
-	public void pressEnterToLogin() {
-		passwordTextBox.sendKeys(Keys.ENTER);
-	}
+    public boolean isPasswordRequiredMessageDisplayed() {
+        return !driver.findElements(passwordRequiredMessage).isEmpty()
+                && driver.findElement(passwordRequiredMessage).isDisplayed();
+    }
 
-	public boolean isUsernameRequiredMessageDisplayed() {
-		return usernameRequiredMessage.isDisplayed();
-	}
+    public boolean isLoginErrorDisplayed() {
+        return !driver.findElements(loginErrorMsg).isEmpty();
+    }
 
-	public boolean isPasswordRequiredMessageDisplayed() {
-		return passwordRequiredMessage.isDisplayed();
-	}
+    public String getLoginErrorMessage() {
+        List<WebElement> errors = driver.findElements(loginErrorMsg);
+        return errors.isEmpty() ? "" : errors.get(0).getText();
+    }
 
-	public String getPasswordFieldType() {
-		return passwordTextBox.getAttribute("type");
-	}
+    // =================== GETTERS ===================
 
-	public void clickLinkedInIcon() {
-		linkedinIcon.click();
-	}
+    public String getUsernameValue() {
+        return driver.findElement(usernameTextBox).getAttribute("value");
+    }
 
-	public void clickFacebookIcon() {
-		facebookIcon.click();
-	}
+    public String getPasswordValue() {
+        return driver.findElement(passwordTextBox).getAttribute("value");
+    }
 
-	public void clickTwitterIcon() {
-		twitterIcon.click();
-	}
+    public String getPasswordFieldType() {
+        return driver.findElement(passwordTextBox).getAttribute("type");
+    }
 
-	public void clickYouTubeIcon() {
-		youtubeIcon.click();
-	}
-	public String getUsernameValue() {
-		return usernameTextBox.getAttribute("value");
-	}
-	public String getPasswordValue() {
-		return passwordTextBox.getAttribute("value");
-	}
+    // =================== SOCIAL LINKS ===================
 
-	public boolean isLoginErrorDisplayed() {
-		return loginErrorMsg.size() > 0;
-	}
+    public void clickLinkedInIcon() {
+        WaitUtils.waitForClickable(driver, linkedinIcon).click();
+    }
 
-	public String getLoginErrorMessage() {
-		if (isLoginErrorDisplayed()) {
-			return loginErrorMsg.get(0).getText();
-		}
-		return "";
-	}
+    public void clickFacebookIcon() {
+        WaitUtils.waitForClickable(driver, facebookIcon).click();
+    }
+
+    public void clickTwitterIcon() {
+        WaitUtils.waitForClickable(driver, twitterIcon).click();
+    }
+
+    public void clickYouTubeIcon() {
+        WaitUtils.waitForClickable(driver, youtubeIcon).click();
+    }
 }

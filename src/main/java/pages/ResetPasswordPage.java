@@ -1,59 +1,72 @@
 package pages;
 
-import java.time.Duration;
-
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
+
+import utils.WaitUtils;
 
 public class ResetPasswordPage {
-	private WebDriver driver;
 
-	@FindBy(xpath = "//h6[text()='Reset Password']")
-	WebElement resetPasswordHeading;
+    private WebDriver driver;
 
-	@FindBy(xpath = "//input[@name='username']")
-	WebElement usernameTextBox;
+    // =================== LOCATORS ===================
 
-	@FindBy(xpath = "//button[@type='submit']")
-	WebElement resetPasswordButton;
+    private By resetPasswordHeading =
+            By.xpath("//h6[text()='Reset Password']");
 
-	@FindBy(xpath = "//button[@type='button' and contains(@class,'oxd-button--ghost')]")
-	WebElement cancelButton;
+    private By usernameTextBox =
+            By.xpath("//input[@name='username']");
 
-	@FindBy(xpath = "//span[text()='Required']")
-	WebElement requiredMessage;
+    private By resetPasswordButton =
+            By.xpath("//button[@type='submit']");
 
-	public ResetPasswordPage(WebDriver driver) {
-		this.driver = driver;
-		PageFactory.initElements(driver, this);
-	}
+    private By cancelButton =
+            By.xpath("//button[@type='button' and contains(@class,'oxd-button--ghost')]");
 
-	public boolean isResetPasswordPageDisplayed() {
-		return resetPasswordHeading.isDisplayed();
-	}
+    private By requiredMessage =
+            By.xpath("//span[text()='Required']");
 
-	public void enterUsername(String username) {
-		usernameTextBox.sendKeys(username);
-	}
+    // =================== CONSTRUCTOR ===================
 
-	public void clickResetPassword() {
-		resetPasswordButton.click();
-	}
+    public ResetPasswordPage(WebDriver driver) {
+        this.driver = driver;
+    }
 
-	public void clickCancel() {
-		new WebDriverWait(driver, Duration.ofSeconds(10)).until(ExpectedConditions.elementToBeClickable(cancelButton));
-		cancelButton.click();
-	}
+    // =================== VALIDATIONS ===================
 
-	public boolean isRequiredMessageDisplayed() {
-		return requiredMessage.isDisplayed();
-	}
+    public boolean isResetPasswordPageDisplayed() {
+        return WaitUtils
+                .waitForVisible(driver, resetPasswordHeading)
+                .isDisplayed();
+    }
 
-	public String getUsernameValue() {
-		return usernameTextBox.getAttribute("value");
-	}
+    public boolean isRequiredMessageDisplayed() {
+        return !driver.findElements(requiredMessage).isEmpty()
+                && driver.findElement(requiredMessage).isDisplayed();
+    }
+
+    // =================== ACTIONS ===================
+
+    public void enterUsername(String username) {
+        WebElement user =
+                WaitUtils.waitForVisible(driver, usernameTextBox);
+        user.clear();
+        user.sendKeys(username);
+    }
+
+    public void clickResetPassword() {
+        WaitUtils.waitForClickable(driver, resetPasswordButton).click();
+    }
+
+    public void clickCancel() {
+        WaitUtils.waitForClickable(driver, cancelButton).click();
+    }
+
+    // =================== GETTERS ===================
+
+    public String getUsernameValue() {
+        return driver.findElement(usernameTextBox)
+                .getAttribute("value");
+    }
 }

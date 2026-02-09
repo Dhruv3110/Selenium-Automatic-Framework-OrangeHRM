@@ -8,7 +8,7 @@
           <include name="setup"/>
           <include name="tearDown"/>
           <include name="setupReport"/>
-          <include name="testSearchNavigation"/>
+          <include name="testChangePasswordNavigation"/>
           <include name="tearDownReport"/>
         </methods>
       </class> <!-- test.DashboardTest -->

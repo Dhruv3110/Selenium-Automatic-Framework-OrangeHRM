@@ -8,15 +8,9 @@
       <class name="test.DashboardTest">
         <methods>
           <include name="setup"/>
-          <include name="testLogoutFunctionality"/>
           <include name="tearDown"/>
-          <include name="testRefreshKeepsUserLoggedIn"/>
           <include name="setupReport"/>
           <include name="testChangePasswordNavigation"/>
-          <include name="testBackButtonAfterLogout"/>
-          <include name="testSupportOptionNavigation"/>
-          <include name="testProfileDropdownOptions"/>
-          <include name="testSearchNavigation"/>
           <include name="tearDownReport"/>
         </methods>
       </class> <!-- test.DashboardTest -->

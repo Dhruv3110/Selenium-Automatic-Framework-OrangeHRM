@@ -1,127 +1,211 @@
 package pages;
 
-import java.time.Duration;
 import java.util.List;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.ElementClickInterceptedException;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
+
+import utils.Log;
+import utils.WaitUtils;
 
 public class DashboardPage {
 
-	private WebDriver driver;
-	private WebDriverWait wait;
+    private WebDriver driver;
 
-	// =================== LOCATORS ===================
+    // =================== LOCATORS ===================
 
-	@FindBy(xpath = "//input[@placeholder='Search']")
-	private WebElement searchBox;
+    private By dashboardLayout =
+            By.xpath("//div[contains(@class,'oxd-layout')]");
 
-	@FindBy(xpath = "//ul[contains(@class,'oxd-main-menu')]//a[contains(@class,'oxd-main-menu-item')]//span")
-	private List<WebElement> menuItems;
+    private By topBar =
+            By.xpath("//header[contains(@class,'oxd-topbar')]");
 
-	@FindBy(xpath = "//p[contains(@class,'oxd-userdropdown-name')]")
-	private WebElement profileDropdown;
+    private By searchBox =
+            By.xpath("//input[@placeholder='Search']");
 
-	@FindBy(xpath = "//a[@class='oxd-userdropdown-link' and normalize-space()='About']")
-	private WebElement aboutOption;
+    private By hamburgerMenu =
+            By.xpath("//i[contains(@class,'oxd-topbar-header-hamburger')]");
 
-	@FindBy(xpath = "//a[@class='oxd-userdropdown-link' and normalize-space()='Support']")
-	private WebElement supportOption;
+    private By sidePanel =
+            By.xpath("//aside[contains(@class,'oxd-sidepanel')]");
 
-	@FindBy(xpath = "//a[@class='oxd-userdropdown-link' and contains(@href,'updatePassword')]")
-	private WebElement changePasswordOption;
+    private By menuItems =
+            By.xpath("//ul[contains(@class,'oxd-main-menu')]//span[contains(@class,'oxd-main-menu-item--name')]");
 
-	@FindBy(xpath = "//a[@class='oxd-userdropdown-link' and contains(@href,'logout')]")
-	private WebElement logoutOption;
+    private By profileDropdown =
+            By.xpath("//span[contains(@class,'oxd-userdropdown-tab')]");
 
-	// =================== CONSTRUCTOR ===================
+    private By dropdownMenu =
+            By.xpath("//ul[contains(@class,'oxd-dropdown-menu')]");
 
-	public DashboardPage(WebDriver driver) {
-		this.driver = driver;
-		this.wait = new WebDriverWait(driver, Duration.ofSeconds(15));
-		PageFactory.initElements(driver, this);
-	}
+    private By aboutOption =
+            By.xpath("//a[@class='oxd-userdropdown-link' and normalize-space()='About']");
 
-	// =================== COMMON WAITS ===================
+    private By supportOption =
+            By.xpath("//a[@class='oxd-userdropdown-link' and normalize-space()='Support']");
 
-	private void waitForDashboardToLoad() {
-		wait.until(ExpectedConditions.visibilityOf(searchBox));
-		wait.until(ExpectedConditions.visibilityOf(profileDropdown));
-	}
+    private By changePasswordOption =
+            By.xpath("//a[@class='oxd-userdropdown-link' and contains(@href,'updatePassword')]");
 
-	// =================== SEARCH ===================
+    private By logoutOption =
+            By.xpath("//a[@class='oxd-userdropdown-link' and contains(@href,'logout')]");
 
-	public void searchAndSelect(String moduleName) {
-	    waitForDashboardToLoad();
-	    
-	    wait.until(ExpectedConditions.elementToBeClickable(searchBox));
-	    searchBox.sendKeys(Keys.CONTROL + "a", Keys.BACK_SPACE);
-	    searchBox.sendKeys(moduleName);
+    // =================== CONSTRUCTOR ===================
 
-	    By menuItemLocator = By.xpath(
-	        "//ul[contains(@class,'oxd-main-menu')]//span[contains(@class,'oxd-main-menu-item--name')]"
-	    );
+    public DashboardPage(WebDriver driver) {
+        this.driver = driver;
+    }
 
-	    // Wait until menu is re-rendered after search
-	    wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(menuItemLocator));
+    // =================== DASHBOARD SYNC ===================
 
-	    List<WebElement> freshMenuItems = driver.findElements(menuItemLocator);
+    private void waitForDashboardToLoad() {
 
-	    for (WebElement item : freshMenuItems) {
-	        if (item.getText().trim().equalsIgnoreCase(moduleName)) {
-	            wait.until(ExpectedConditions.elementToBeClickable(item)).click();
-	            return;
-	        }
-	    }
+        WaitUtils.waitForVisible(driver, topBar);
+        WaitUtils.waitForVisible(driver, dashboardLayout);
+        WaitUtils.waitForPresence(driver, sidePanel);
 
-	    throw new RuntimeException("Menu item not found after search: " + moduleName);
-	}
+        ensureMenuExpanded();
+    }
+
+    private void ensureMenuExpanded() {
+
+        if (!driver.findElements(searchBox).isEmpty()
+                && driver.findElement(searchBox).isDisplayed()) {
+            return;
+        }
+
+        if (!driver.findElements(hamburgerMenu).isEmpty()
+                && driver.findElement(hamburgerMenu).isDisplayed()) {
+
+            WaitUtils.waitForClickable(driver, hamburgerMenu).click();
+        }
+    }
+    
+    public void waitForDashboardShell() {
+        WaitUtils.waitForVisible(driver,
+            By.xpath("//header[contains(@class,'oxd-topbar')]")
+        );
+    }
+    
+    public boolean isDashboardAccessible() {
+        return !driver.findElements(searchBox).isEmpty()
+               || !driver.findElements(hamburgerMenu).isEmpty();
+    }
 
 
-	// =================== PROFILE DROPDOWN ===================
+    // =================== SEARCH ===================
 
-	public void openProfileDropdown() {
-		waitForDashboardToLoad();
-		wait.until(ExpectedConditions.elementToBeClickable(profileDropdown)).click();
-		try {
-			wait.until(ExpectedConditions.elementToBeClickable(logoutOption));
-		} catch (Exception e) {
-			profileDropdown.click();
-			wait.until(ExpectedConditions.elementToBeClickable(logoutOption));
-		}
-	}
+    public void searchAndSelect(String moduleName) {
 
-	public boolean areProfileOptionsVisible() {
-		try {
-			openProfileDropdown();
-			return aboutOption.isDisplayed() && supportOption.isDisplayed() && changePasswordOption.isDisplayed()
-					&& logoutOption.isDisplayed();
-		} catch (Exception e) {
-			return false;
-		}
-	}
+        Log.info("[Search] Searching module: " + moduleName);
 
-	// =================== ACTIONS ===================
+        waitForDashboardToLoad();
 
-	public void clickLogout() {
-		openProfileDropdown();
-		wait.until(ExpectedConditions.elementToBeClickable(logoutOption)).click();
-		wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("username")));
-	}
+        WebElement search = WaitUtils.waitForClickable(driver, searchBox);
+        search.sendKeys(Keys.CONTROL + "a", Keys.BACK_SPACE);
+        search.sendKeys(moduleName);
 
-	public void clickChangePassword() {
-		openProfileDropdown();
-		wait.until(ExpectedConditions.elementToBeClickable(changePasswordOption)).click();
-	}
+        List<WebElement> items =
+                WaitUtils.waitForPresenceOfAll(driver, menuItems);
 
-	public void clickSupport() {
-		openProfileDropdown();
-		wait.until(ExpectedConditions.elementToBeClickable(supportOption)).click();
-	}
+        for (WebElement item : items) {
+            if (item.getText().trim().equalsIgnoreCase(moduleName)) {
+                item.click();
+                return;
+            }
+        }
+
+        throw new RuntimeException("Menu item not found: " + moduleName);
+    }
+
+    // =================== PROFILE ===================
+
+    public void openProfileDropdown() {
+
+        Log.info("[Profile] Opening profile dropdown");
+
+        waitForDashboardToLoad();
+
+        WebElement profile =
+                WaitUtils.waitForVisible(driver, profileDropdown);
+
+        try {
+            profile.click();
+        } catch (ElementClickInterceptedException e) {
+            Log.warn("[Profile] Click intercepted, using JS click");
+            WaitUtils.jsClick(driver, profile);
+        }
+
+        WaitUtils.waitForPresence(driver, dropdownMenu);
+    }
+
+    public boolean areProfileOptionsVisible() {
+        try {
+            openProfileDropdown();
+
+            return WaitUtils.waitForVisible(driver, aboutOption).isDisplayed()
+                    && WaitUtils.waitForVisible(driver, supportOption).isDisplayed()
+                    && WaitUtils.waitForVisible(driver, changePasswordOption).isDisplayed()
+                    && WaitUtils.waitForVisible(driver, logoutOption).isDisplayed();
+
+        } catch (Exception e) {
+            Log.error("[Profile] Options not visible: " + e.getMessage());
+            return false;
+        }
+    }
+
+    // =================== ACTIONS ===================
+
+    public void clickLogout() {
+
+        Log.info("[Logout] Logging out");
+
+        openProfileDropdown();
+
+        WebElement logout =
+                WaitUtils.waitForVisible(driver, logoutOption);
+
+        try {
+            logout.click();
+        } catch (ElementClickInterceptedException e) {
+            WaitUtils.jsClick(driver, logout);
+        }
+    }
+
+    public void clickChangePassword() {
+
+        openProfileDropdown();
+
+        WebElement changePwd =
+                WaitUtils.waitForVisible(driver, changePasswordOption);
+
+        try {
+            changePwd.click();
+        } catch (ElementClickInterceptedException e) {
+            WaitUtils.jsClick(driver, changePwd);
+        }
+    }
+
+    public void clickSupport() {
+
+        openProfileDropdown();
+
+        WebElement support =
+                WaitUtils.waitForVisible(driver, supportOption);
+
+        try {
+            support.click();
+        } catch (ElementClickInterceptedException e) {
+            WaitUtils.jsClick(driver, support);
+        }
+    }
+    public boolean isChangePasswordPageOpened() {
+        return driver.getCurrentUrl()
+                     .toLowerCase()
+                     .contains("updatepassword");
+    }
+
 }
