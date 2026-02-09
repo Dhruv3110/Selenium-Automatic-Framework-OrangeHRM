@@ -5,8 +5,9 @@
 [![TestNG](https://img.shields.io/badge/TestNG-7.x-red.svg)](https://testng.org/)
 [![Maven](https://img.shields.io/badge/Maven-3.x-blue.svg)](https://maven.apache.org/)
 
-This project is a **Selenium-based automation testing framework** built using **Java, TestNG, and Page Object Model (POM)**.  
-It is designed to be **stable, scalable, and headless-ready**, making it suitable for **local execution as well as CI/CD pipelines**.
+
+This project is a Selenium-based automation testing framework built using Java, TestNG, and Page Object Model (POM).  
+It is designed to be stable, scalable, and headless-ready, making it suitable for local execution as well as CI/CD pipelines.
 
 ---
 
@@ -14,15 +15,15 @@ It is designed to be **stable, scalable, and headless-ready**, making it suitabl
 
 | Component | Technology |
 |-----------|------------|
-| **Language** | Java |
-| **Automation Tool** | Selenium WebDriver |
-| **Test Framework** | TestNG |
-| **Design Pattern** | Page Object Model (POM) |
-| **Build Tool** | Maven |
-| **Browser** | Google Chrome |
-| **Reporting** | Extent Reports |
-| **Logging** | Log4j |
-| **Execution Modes** | Headless & Non-headless |
+| Language | Java |
+| Automation Tool | Selenium WebDriver |
+| Test Framework | TestNG |
+| Design Pattern | Page Object Model (POM) |
+| Build Tool | Maven |
+| Browser | Google Chrome |
+| Reporting | Extent Reports |
+| Logging | Log4j |
+| Execution Modes | Headless & Non-headless |
 
 ---
 
@@ -33,107 +34,102 @@ orangehrm-automation-framework
 │
 ├── src/main/java
 │   ├── base
-│   │   └── BaseTest.java                    # Base test class with WebDriver setup
+│   │   └── BaseTest.java
 │   │
 │   ├── pages
-│   │   ├── LoginPage.java                   # Login page object
-│   │   ├── DashboardPage.java               # Dashboard page object
-│   │   └── ResetPasswordPage.java           # Reset password page object
+│   │   ├── LoginPage.java
+│   │   ├── DashboardPage.java
+│   │   └── ResetPasswordPage.java
 │   │
 │   └── utils
-│       ├── AppURLs.java                     # Application URLs configuration
-│       ├── ExtentReportManager.java         # Report generation utility
-│       └── Log.java                         # Logging utility
+│       ├── AppURLs.java
+│       ├── ExtentReportManager.java
+│       ├── WaitManager.java
+│       ├── WaitUtils.java
+│       └── Log.java
 │
-├── src/main/resources                        # Configuration files
+├── src/main/resources
 │
 ├── src/test/java
 │   └── test
-│       ├── LoginTest.java                   # Login test scenarios
-│       ├── DashboardTest.java               # Dashboard test scenarios
-│       └── ResetPasswordTest.java           # Password reset test scenarios
+│       ├── LoginTest.java
+│       ├── DashboardTest.java
+│       └── ResetPasswordTest.java
 │
-├── src/test/resources                        # Test resources
+├── src/test/resources
 │
-├── logs                                      # Execution logs
-├── reports                                   # HTML test reports
-├── screenshots                               # Failure screenshots
+├── logs
+├── reports
+├── screenshots
 │
-├── pom.xml                                   # Maven configuration
-├── testng.xml                                # TestNG suite configuration
-└── README.md                                 # Project documentation
+├── pom.xml
+├── testng.xml
+└── README.md
 ```
 
 ---
 
 ## 🧩 Framework Features
 
-- ✅ **Page Object Model (POM)** for maintainable UI automation
-- ✅ **Thread-safe WebDriver** using `ThreadLocal`
-- ✅ **Headless Chrome support** for CI/CD
-- ✅ **Explicit waits & JS-based interactions** for dynamic UI handling
-- ✅ **Parallel test execution** with TestNG
-- ✅ **Automatic screenshot capture on failures**
-- ✅ **Extent Reports integration**
-- ✅ **Centralized logging using Log4j**
+- ✅ **Page Object Model (POM)**
+- ✅ **Thread-safe WebDriver** using ThreadLocal
+- ✅ **Headless Chrome** support
+- ✅ **Explicit waits** & JS-based interactions
+- ✅ **Parallel execution** using TestNG
+- ✅ **Automatic screenshots** on failure
+- ✅ **Extent Reports** integration
+- ✅ **Centralized logging** with Log4j
 
 ---
 
 ## 🧪 Test Coverage
 
 ### 🔐 Login Tests
-- ✓ Valid login
-- ✓ Invalid credentials
-- ✓ Empty username/password
-- ✓ Refresh & back navigation
-- ✓ Forgot password link
+- Valid & invalid login
+- Empty field validation
+- Refresh & back navigation
+- Forgot password flow
 
 ### 📊 Dashboard Tests
-- ✓ Sidebar menu navigation
-- ✓ Profile dropdown options
-- ✓ Support page navigation
-- ✓ Change password navigation
-- ✓ Logout functionality
-- ✓ Session handling (refresh & back button)
+- Sidebar navigation
+- Profile dropdown options
+- Support page navigation
+- Change password navigation
+- Logout functionality
+- Session handling
 
 ### 🔁 Reset Password Tests
-- ✓ Empty username validation
-- ✓ Cancel button navigation
-- ✓ Refresh behavior
-- ✓ Direct access without login
-- ✓ Reset password confirmation flow
+- Empty username validation
+- Cancel navigation
+- Refresh behavior
+- Direct access restriction
+- Reset confirmation flow
 
 ---
 
 ## ⚙️ Prerequisites
 
-Before running the tests, ensure you have the following installed:
-
-- **Java JDK 8 or above** - [Download](https://www.oracle.com/java/technologies/downloads/)
-- **Maven 3.x** - [Download](https://maven.apache.org/download.cgi)
-- **Google Chrome** (latest version)
-- **Git** - [Download](https://git-scm.com/downloads)
+- Java JDK 8+
+- Maven 3.x
+- Google Chrome (latest)
+- Git
 
 ---
 
 ## 🛠️ Setup Instructions
 
-### 1️⃣ Clone the Repository
-
+### 1️⃣ Clone Repository
 ```bash
 git clone https://github.com/Dhruv3110/Selenium-Automatic-Framework-OrangeHRM.git
 cd orangehrm-automation-framework
 ```
 
-### 2️⃣ Import into IDE
+### 2️⃣ Import Project
+- Import as Maven Project
+- Ensure JDK is configured
+- Let Maven download dependencies
 
-- Open your IDE (IntelliJ IDEA / Eclipse)
-- Import as **Maven Project**
-- Ensure JDK 8 or above is configured
-- Wait for Maven to download dependencies
-
-### 3️⃣ Verify Setup
-
+### 3️⃣ Verify Build
 ```bash
 mvn clean compile
 ```
@@ -142,31 +138,23 @@ mvn clean compile
 
 ## ▶️ How to Run Tests
 
-### 🎯 Option 1: Run Using TestNG (IDE)
+### Run via TestNG (IDE)
+1. Right-click `testng.xml`
+2. Run as TestNG Suite
 
-1. Right-click on `testng.xml`
-2. Select **Run as → TestNG Suite**
-
-### 🎯 Option 2: Run Using Maven
-
+### Run via Maven
 ```bash
-# Run all tests
 mvn clean test
-
-# Run specific test class
-mvn clean test -Dtest=LoginTest
-
-# Run in headless mode
-mvn clean test -Dheadless=true
 ```
 
-### 🎯 Option 3: Run Specific Test Groups
-
+### Run Specific Test
 ```bash
-# Run only smoke tests
-mvn clean test -Dgroups=smoke
+mvn clean test -Dtest=LoginTest
+```
 
-# Run regression tests
+### Run Test Groups
+```bash
+mvn clean test -Dgroups=smoke
 mvn clean test -Dgroups=regression
 ```
 
@@ -174,15 +162,8 @@ mvn clean test -Dgroups=regression
 
 ## 🧠 Headless Execution
 
-The framework supports headless Chrome execution for CI/CD pipelines.
+Headless execution is enabled by default using ChromeOptions in `BaseTest.java`.
 
-Headless mode is configured in `BaseTest.java` using `ChromeOptions`, ensuring:
-- ✓ Stable element interaction
-- ✓ Proper viewport handling
-- ✓ CI/CD compatibility
-- ✓ Faster execution
-
-**Configuration:**
 ```java
 ChromeOptions options = new ChromeOptions();
 options.addArguments("--headless");
@@ -190,80 +171,55 @@ options.addArguments("--disable-gpu");
 options.addArguments("--window-size=1920,1080");
 ```
 
+**This ensures:**
+- Stable execution
+- CI/CD compatibility
+- Faster test runs
+
+---
+
+## ⚡ Parallel Execution
+
+Parallel execution is supported using TestNG.
+
+```xml
+<suite name="OrangeHRM Suite" parallel="tests" thread-count="3">
+```
+
+Each test runs with its own WebDriver instance using **ThreadLocal**.
+
 ---
 
 ## 📊 Reports, Logs & Screenshots
 
-After test execution, the following artifacts are generated:
-
 | Artifact | Location | Description |
 |----------|----------|-------------|
-| **Extent Reports** | `reports/` | Detailed HTML test reports with charts |
-| **Execution Logs** | `logs/` | Log4j logs with DEBUG/INFO/ERROR levels |
-| **Failure Screenshots** | `screenshots/` | Auto-captured screenshots on test failures |
+| Reports | `reports/` | Extent HTML reports |
+| Logs | `logs/` | Log4j execution logs |
+| Screenshots | `screenshots/` | Captured on failures |
 
-### Viewing Reports
-
-1. Navigate to the `reports/` folder
-2. Open the latest HTML report in a browser
-3. View test execution details, pass/fail status, and screenshots
-
----
-
-## 🔧 Configuration Files
-
-### `pom.xml`
-Contains all Maven dependencies and build configurations:
-- Selenium WebDriver
-- TestNG
-- Extent Reports
-- Log4j
-
-### `testng.xml`
-Defines the test suite structure:
-- Test groups
-- Parallel execution settings
-- Test listeners
-
-### `AppURLs.java`
-Centralized URL management:
-- Base URL
-- Environment-specific URLs
-- Page endpoints
+> ⚠️ **Note:** These folders are generated at runtime and ignored via `.gitignore`.
 
 ---
 
 ## 🏗️ Framework Architecture
 
-### Base Test Class
+### Base Test
 ```java
 public class BaseTest {
     protected static ThreadLocal<WebDriver> driver = new ThreadLocal<>();
-    
-    @BeforeMethod
-    public void setUp() {
-        // WebDriver initialization
-    }
-    
-    @AfterMethod
-    public void tearDown() {
-        // WebDriver cleanup
-    }
 }
 ```
 
-### Page Object Pattern
+### Page Object Example
 ```java
 public class LoginPage {
+
     private WebDriver driver;
-    
-    // Locators
-    @FindBy(id = "username")
-    private WebElement usernameField;
-    
-    // Methods
-    public void login(String username, String password) {
-        // Implementation
+    private By usernameField = By.id("username");
+
+    public void enterUsername(String username) {
+        WaitUtils.waitForVisible(driver, usernameField).sendKeys(username);
     }
 }
 ```
@@ -272,80 +228,71 @@ public class LoginPage {
 
 ## 🔍 Best Practices Implemented
 
-1. **Separation of Concerns** - Test logic separated from page logic
-2. **DRY Principle** - Reusable components and utilities
-3. **Explicit Waits** - Better synchronization over implicit waits
-4. **Thread Safety** - ThreadLocal for parallel execution
-5. **Meaningful Names** - Clear naming conventions
-6. **Logging** - Comprehensive logging for debugging
-7. **Error Handling** - Graceful exception handling
+- Separation of concerns
+- Explicit waits over implicit waits
+- Thread-safe execution
+- Reusable utilities
+- Centralized logging
+- Robust error handling
+
+### ThreadLocal WebDriver
+- One WebDriver per test thread
+- No data collision
+- True parallel execution
 
 ---
 
 ## 🚀 Future Enhancements
 
-- [ ] Cross-browser execution (Firefox, Edge, Safari)
-- [ ] Data-driven testing (Excel / JSON / CSV)
-- [ ] Docker support for containerized execution
-- [ ] CI/CD integration (GitHub Actions / Jenkins)
+- [ ] Cross-browser execution
+- [ ] Data-driven testing
+- [ ] Docker support
+- [ ] CI/CD pipelines (GitHub Actions / Jenkins)
 - [ ] API testing integration
-- [ ] Visual regression testing
-- [ ] Performance testing capabilities
 - [ ] Cloud execution (BrowserStack / Sauce Labs)
 
 ---
 
 ## 🐛 Troubleshooting
 
-### Common Issues
+### ChromeDriver mismatch
+Update ChromeDriver dependency
 
-**Issue:** ChromeDriver version mismatch
-```bash
-# Solution: Update ChromeDriver in pom.xml to match Chrome version
-```
-
-**Issue:** Tests fail in headless mode
-```bash
-# Solution: Add window size argument
+### Headless failures
+```java
 options.addArguments("--window-size=1920,1080");
 ```
 
-**Issue:** Element not found
-```bash
-# Solution: Increase explicit wait time or check selector
-```
+### Element not found
+- Increase explicit wait
+- Validate locator
 
 ---
 
 ## 📝 Contributing
 
-Contributions are welcome! Please follow these steps:
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+1. Fork the repo
+2. Create feature branch
+3. Commit changes
+4. Push & raise PR
 
 ---
-
 
 ## 👤 Author
 
 **Dhruv Gupta**  
-B.Tech CSE | Selenium Automation | TestNG | POM
+B.Tech CSE | Selenium Automation Engineer
 
-- GitHub: [@dhruvgupta](https://github.com/Dhruv3110)
-- LinkedIn: [Dhruv Gupta](https://www.linkedin.com/in/dhruv-gupta-794968244/)
-- Portfolio: [Dhruv Gupta](https://dhruvgupta-dev.web.app/)
+- 🔗 [GitHub](https://github.com/Dhruv3110)
+- 💼 [LinkedIn](https://www.linkedin.com/in/dhruv-gupta-794968244/)
+- 🌐 [Portfolio](https://dhruvgupta-dev.web.app/)
 
 ---
-
 
 ## ⭐ Star This Repository
 
-If you find this framework useful, please consider giving it a star ⭐
+If you find this framework useful, please give it a ⭐
 
 ---
 
-**Last Updated:** February 2026
+**Last Updated:** February 2026 ✅
