@@ -33,3 +33,4 @@ Thumbs.db
 *.env
 .env.*
 *.local
+/.apt_generated_tests/
