@@ -11,6 +11,7 @@ build/
 /reports/
 /logs/
 *.log
+.log.*
 
 ### IDEs ###
 .idea/
