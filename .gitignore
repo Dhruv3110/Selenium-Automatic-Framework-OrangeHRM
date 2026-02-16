@@ -4,11 +4,13 @@ bin/
 build/
 *.class
 
-### Logs & Test Artifacts ###
-*.log
-/screenshots/*
+### Test Outputs & Artifacts ###
 /test-output/
+/surefire-reports/
+/screenshots/
+/reports/
 /logs/
+*.log
 
 ### IDEs ###
 .idea/
@@ -19,7 +21,7 @@ build/
 .project
 .classpath
 .settings/
-.metadata
+.metadata/
 .recommenders/
 .apt_generated/
 .sts4-cache/
@@ -28,9 +30,8 @@ build/
 .DS_Store
 Thumbs.db
 
-### Environment ###
+### Environment / Secrets ###
 .env
 *.env
 .env.*
 *.local
-/.apt_generated_tests/
